@@ -11,19 +11,20 @@ export default class Login extends Component {
     //密码的验证器
     checkPrice = (rule, value) => {
         
-        if (value.length >= 4 &&value.length <= 12) {
-          return Promise.resolve();
-        }else if(/^\w+$/.test(value)){
+        if (!value.length >= 4 &&!value.length <= 12) {
+            return Promise.reject('密码为4-12位');
+        }
+        if(!/^\w+$/.test(value)){
             return Promise.reject('密码必须由英文、数字、下划线组成');
-        }else 
-        return Promise.reject('密码为4-12位');
+        }
+        
+        return Promise.resolve();
       };
     
     
-    handleSubmit = () => { 
-        alert('表单提交了')
-
-    }
+      onFinish = values => {
+        console.log('Received values of form: ', values);
+      }
     render() {
         return (
             <div className="login">
@@ -36,14 +37,16 @@ export default class Login extends Component {
                     
 
                     <Form
-                        onSubmit={this.handleSubmit}
+                        onFinish={this.onFinish}
                         name="normal_login"
                         className="login-form"
+                        
                         
                        
 
                     >
                         <Form.Item
+                            
                             name="username"
                             rules={[{ required: true, message: '用户名不能为空'},
                             {min:4,message:'用户名不能少于4位'},
@@ -56,7 +59,7 @@ export default class Login extends Component {
                             name="password"
                             rules={[{ validator: this.checkPrice}]}
                         >
-                            <Input
+                            <Input.Password visibilityToggle
                                 prefix={<LockOutlined className="site-form-item-icon" />}
                                 type="password"
                                 placeholder="密码"
