@@ -33,9 +33,9 @@ export default class Counter extends Component {
     incrementIfOdd = () => {
         let { value } = this.refs.selectNumber
         const {increment} = this.props
-        if(this.props.count%2===1){
+        
             increment(value)
-        }
+        
        
         // let { count } = this.state
       // this.store.dispatch(createIncrementAsyncAction(value))
@@ -53,7 +53,7 @@ export default class Counter extends Component {
 
     render() {
         // let  count  = this.store.getState()
-        let { count } = this.props
+        let { count } = this.props.count
         return (
             <div>
                 <h3>当前计数为{count}</h3>
