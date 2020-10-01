@@ -3,6 +3,7 @@ import {TEST1,TEST2} from "../action_types"
 
 
 export const createDemo1Action = (value) => {
+    console.log(value)
     return {type:TEST1,data:value}
 
 }

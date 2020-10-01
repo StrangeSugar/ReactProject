@@ -1,42 +1,58 @@
 import React, { Component } from 'react'
-import "./css/login.less"
-import logo from './imgs/logo2.png'
 import { Form, Input, Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import {connect} from  'react-redux'
+import "./css/login.less"
+import logo from './imgs/logo2.png'
+import {createDemo1Action,createDemo2Action} from '../../redux/actions_creators/test_action'
+import {reqLogin} from '../../api'
 
 
 
 class Login extends Component {
+
+    componentDidMount(){
+        console.log(this.props)
+    }
+
+
     //密码的验证器
     checkPrice = (rule, value) => {
         
-        if (value.length >= 4 &&value.length <= 12) {
+        if (value.length >= 4 &&value.length <= 12 && /^\w+$/.test(value)) {
           return Promise.resolve();
-        }else if(/^\w+$/.test(value)){
-            return Promise.reject('密码必须由英文、数字、下划线组成');
-        }else 
-        return Promise.reject('密码为4-12位');
+        }else{
+            if(!/^\w+$/.test(value)){
+                return Promise.reject("密码必须由英文、数字、下划线组成")
+            }
+            if(!value.length >= 4 || !value.length <= 12){
+                return Promise.reject("密码为4-12位")
+            }
+        }
       };
     
     
-    handleSubmit = () => { 
-        alert('表单提交了')
+    onFinish = (values) => { 
+        
+        reqLogin(values)
+ 
 
     }
     render() {
+        
         return (
+
             <div className="login">
                 <header>
                     <img src={logo} alt="logo" />
                     <h1>商品管理系统</h1>
                 </header>
                 <section>
-                    <h1>用户登录</h1>
+        <h1>用户登录</h1>
                     
 
                     <Form
-                        onSubmit={this.handleSubmit}
+                        onFinish={ this.onFinish}
                         name="normal_login"
                         className="login-form"
                         
@@ -83,10 +99,12 @@ class Login extends Component {
     }
 }
 
-export default  connect(
+export default connect(
     state=>({
-        
-    })
-    
-    
-    )(Login)
+        loginState:state.test
+    }),
+    {
+        loginDemo1:createDemo1Action,
+        loginDemo2:createDemo2Action
+
+    })(Login)

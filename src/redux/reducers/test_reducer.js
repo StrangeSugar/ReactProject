@@ -1,7 +1,7 @@
 import { TEST1, TEST2 } from '../action_types'
 
 
-let initState = ''
+let initState = 'hello'
 export default function test(preState = initState, action) {
     
     let newState = ''
