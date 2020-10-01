@@ -3,11 +3,11 @@ import "./css/login.less"
 import logo from './imgs/logo2.png'
 import { Form, Input, Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {connect} from  'react-redux'
 
 
 
-
-export default class Login extends Component {
+class Login extends Component {
     //密码的验证器
     checkPrice = (rule, value) => {
         
@@ -82,3 +82,11 @@ export default class Login extends Component {
         )
     }
 }
+
+export default  connect(
+    state=>({
+        
+    })
+    
+    
+    )(Login)
