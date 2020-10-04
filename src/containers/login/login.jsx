@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { Form, Input, Button} from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import {message} from 'antd'
 import {connect} from  'react-redux'
+import {Redirect} from "react-router-dom"
 import "./css/login.less"
 import logo from './imgs/logo2.png'
-import {createDemo1Action,createDemo2Action} from '../../redux/actions_creators/test_action'
+import {createSaveUserInfoAction} from '../../redux/actions_creators/login_action'
 import {reqLogin} from '../../api'
 
 
@@ -32,79 +34,106 @@ class Login extends Component {
       };
     
     
-    onFinish = (values) => { 
+     onFinish = async (values) => { 
         
-        reqLogin(values)
+        // reqLogin(values).then((result)=>{
+        //     console.log(result.data)
+
+        // }).catch((reson)=>{
+        //     console.log(reson)
+        // })
+        
+        
+        let result = await reqLogin(values)
+        
+        if(result.status===0){
+            result.cookie = document.cookie
+            this.props.saveUserInfo(result)
+            this.props.history.replace("/admin")
+            console.log(result)
+           
+         
+        }else{
+            message.warning(result.msg)
+        }
  
 
     }
+
     render() {
+        if(this.props.isLogin){
+            
+            return <Redirect to={'/admin'}/>
+        }
         
-        return (
+            return (
 
-            <div className="login">
-                <header>
-                    <img src={logo} alt="logo" />
-                    <h1>商品管理系统</h1>
-                </header>
-                <section>
-        <h1>用户登录</h1>
-                    
-
-                    <Form
-                        onFinish={ this.onFinish}
-                        name="normal_login"
-                        className="login-form"
+                <div className="login">
+                    <header>
+                        <img src={logo} alt="logo" />
+                        <h1>商品管理系统</h1>
+                    </header>
+                    <section>
+            <h1>用户登录</h1>
                         
-                       
-
-                    >
-                        <Form.Item
-                            name="username"
-                            rules={[{ required: true, message: '用户名不能为空'},
-                            {min:4,message:'用户名不能少于4位'},
-                            {max:12,message:'用户名不能大于12位'},
-                            {pattern:/^\w+$/,message:"用户名必须由英文、数字、下划线组成"}]}
+    
+                        <Form
+                            onFinish={ this.onFinish}
+                            name="normal_login"
+                            className="login-form"
+                            
+                           
+    
                         >
-                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
-                        </Form.Item>
-                        <Form.Item
-                            name="password"
-                            rules={[{ validator: this.checkPrice}]}
-                        >
-                            <Input
-                                prefix={<LockOutlined className="site-form-item-icon" />}
-                                type="password"
-                                placeholder="密码"
-                            />
-                        </Form.Item>
-                        
-
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login-form-button">
-                                登录
-                            </Button>
+                            <Form.Item
+                                name="username"
+                                rules={[{ required: true, message: '用户名不能为空'},
+                                {min:4,message:'用户名不能少于4位'},
+                                {max:12,message:'用户名不能大于12位'},
+                                {pattern:/^\w+$/,message:"用户名必须由英文、数字、下划线组成"}]}
+                            >
+                                <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
+                            </Form.Item>
+                            <Form.Item
+                                name="password"
+                                rules={[{ validator: this.checkPrice}]}
+                            >
+                                <Input
+                                    prefix={<LockOutlined className="site-form-item-icon" />}
+                                    type="password"
+                                    placeholder="密码"
+                                />
+                            </Form.Item>
+                            
+    
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" className="login-form-button">
+                                    登录
+                                </Button>
+            
+                            </Form.Item>
+                        </Form>
+    
+    
+    
+    
+    
+    
+                    </section>
+                </div>
+            )
         
-                        </Form.Item>
-                    </Form>
-
-
-
-
-
-
-                </section>
-            </div>
-        )
+        
+        
     }
+    
 }
 
 export default connect(
     state=>({
-        loginState:state.test
+        isLogin:state.userInfo.isLogin
+
     }),
     {
-        loginDemo1:createDemo1Action,
-        loginDemo2:createDemo2Action
-
+        saveUserInfo:createSaveUserInfoAction
     })(Login)

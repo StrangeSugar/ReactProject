@@ -1,2 +1,3 @@
- export const TEST1="test1"
- export const TEST2="test2"
+ export const SAVE_USER_INFO="saveUserInfo"
+ export const DELETE_USER_INFO="deleteUserInfo"
+ 

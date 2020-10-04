@@ -1,22 +1,51 @@
-import React,{Component} from 'react'
-import {connect} from 'react-redux'
-import {createDemo1Action,createDemo2Action} from '../../redux/actions_creators/test_action'
-class Admin extends Component{
-           render(){
-               return (
-                 <div >
-                     admin
-                  </div>
-        )
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { Redirect } from "react-router-dom"
+import {createDeleteuserInfoAction} from '../../redux/actions_creators/login_action'
+
+
+
+
+class Admin extends Component {
+    componentDidMount() {
+        console.log(this.props)
+    }
+    logOut = () => {
+        this.props.deleteuserInfo()
+        
+    }
+
+    render() {
+        let { user, isLogin } = this.props.userInfo
+        if (isLogin) {
+            return (
+                <div>
+                    <div >
+                        {user.username}
+                    </div>
+                    <button onClick={this.logOut} >注销</button>
+                </div>
+
+            )
+        } else{
+            return <Redirect to={'/login'} />
+        }
+       
+        
+        
+
+
+
     }
 }
 
 export default connect(
     state => ({
-        adminState:state
-    }), 
+        userInfo: state.userInfo
+    }),
     {
-        adminDemo1:createDemo1Action,
-        adminDemo2:createDemo2Action
+        deleteuserInfo:createDeleteuserInfoAction
     }
+
+
 )(Admin)

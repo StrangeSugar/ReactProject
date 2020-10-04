@@ -1,19 +1,8 @@
-import axios from "axios"
+import axios from "./MyAxios"
+import {BASE_URL} from '../config'
 
-
+ 
 //登录请求
-export const reqLogin=(values)=>{
-    let {username,password} = values
-    axios.post('http://localhost:3000/login',{
-        username,
-        password
-    }).then((result)=>{
-        console.log(result.data)
-        
-        
+export const reqLogin=(values)=>axios.post(`${BASE_URL}/login`,values)
+    
 
-    }).catch((reson)=>{
-        console.log(reson)
-    })
-
-}
