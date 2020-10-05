@@ -10,5 +10,6 @@ const { override, fixBabelImports, addLessLoader,addDecoratorsLegacy} = require(
       javascriptEnabled: true,
       modifyVars: { '@primary-color': '#1DA57A' },
     }),
+    addDecoratorsLegacy()
  
  );

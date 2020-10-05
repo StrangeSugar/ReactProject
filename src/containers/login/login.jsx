@@ -10,6 +10,15 @@ import {createSaveUserInfoAction} from '../../redux/actions_creators/login_actio
 import {reqLogin} from '../../api'
 
 
+@connect(state=>({
+    isLogin:state.userInfo.isLogin
+
+}),
+{
+    saveUserInfo:createSaveUserInfoAction
+}
+)
+
 
 class Login extends Component {
 
@@ -20,7 +29,10 @@ class Login extends Component {
 
     //密码的验证器
     checkPrice = (rule, value) => {
-        
+
+        if(!value){
+            return Promise.reject("密码不能为空");
+        }
         if (value.length >= 4 &&value.length <= 12 && /^\w+$/.test(value)) {
           return Promise.resolve();
         }else{
@@ -31,7 +43,10 @@ class Login extends Component {
                 return Promise.reject("密码为4-12位")
             }
         }
+        
+        
       };
+
     
     
      onFinish = async (values) => { 
@@ -129,11 +144,4 @@ class Login extends Component {
     
 }
 
-export default connect(
-    state=>({
-        isLogin:state.userInfo.isLogin
-
-    }),
-    {
-        saveUserInfo:createSaveUserInfoAction
-    })(Login)
+export default Login
