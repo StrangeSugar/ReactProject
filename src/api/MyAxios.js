@@ -2,6 +2,8 @@ import axios from 'axios'
 import {message} from 'antd'
 import qs from 'querystring'
 import NProgress from 'nprogress'
+import store from '../redux/store'
+import {createDeleteuserInfoAction} from '../redux/actions_creators/login_action'
 import 'nprogress/nprogress.css'
 
 
@@ -28,7 +30,16 @@ instanse.interceptors.response.use((response)=>{
     return response.data
 },(err)=>{
     NProgress.done()
-    message.error(err.message)
+    if(err.response.status===401){
+        message.error("身份验证失败，请重新登录")
+        store.dispatch(createDeleteuserInfoAction())
+        
+
+
+    }else{
+        message.error(err.message)
+    }
+    
 
     return new Promise(()=>{})
 })

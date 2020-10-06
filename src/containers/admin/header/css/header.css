@@ -1,0 +1,45 @@
+.header {
+  height: 80px;
+  background-color: white;
+}
+.header .header-top {
+  height: 40px;
+  border-bottom: 1px solid #1DA57A;
+  text-align: right;
+  line-height: 40px;
+}
+.header .header-top .username {
+  margin: 0px 0px 0px 10px;
+}
+.header .header-bottom {
+  display: flex;
+  height: 40px;
+  line-height: 40px;
+}
+.header .header-bottom .header-bottom-left {
+  width: 25%;
+  font-size: 25px;
+  text-align: center;
+  position: relative;
+}
+.header .header-bottom .header-bottom-left::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border: 40px solid;
+  border-color: transparent transparent white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.header .header-bottom .header-bottom-right {
+  width: 75%;
+  text-align: right;
+  padding-right: 10px ;
+}
+.header .header-bottom .header-bottom-right span {
+  margin: 5px 5px;
+}
+.header .header-bottom .header-bottom-right img {
+  margin: 0px 8px;
+}
