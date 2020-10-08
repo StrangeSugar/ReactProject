@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect,Route,Switch } from "react-router-dom"
 import { Layout } from 'antd';
-import { createDeleteuserInfoAction } from '../../redux/actions_creators/login_action'
 import { reqCategoryList } from '../../api'
 import './css/admin.less'
 import Header from './header/header.jsx'
@@ -14,7 +13,9 @@ import Role from '../role/role'
 import Bar from '../bar/bar' 
 import Line from '../line/line' 
 import Pie from '../pie/pie' 
+import LeftNav from './left_nav/left_nav'
 const { Footer, Sider, Content } = Layout;
+
 
 
 
@@ -26,21 +27,20 @@ class Admin extends Component {
         console.log(result)
     }
     componentDidMount() {
-        console.log(this.props)
+       
     }
-    logOut = () => {
-        this.props.deleteuserInfo()
-
-    }
+    
 
     render() {
 
         let {isLogin } = this.props.userInfo
         if (isLogin) {
             return (
-                
+               
                     <Layout className='admin'>
-                        <Sider className='sider'>Sider</Sider>
+                        <Sider className='sider'>
+                        <LeftNav/>
+                        </Sider>
                         <Layout>
                             <Header className='header'>Header</Header>
                             <Content className='content'>
@@ -79,9 +79,6 @@ export default connect(
     state => ({
         userInfo: state.userInfo
     }),
-    {
-        deleteuserInfo: createDeleteuserInfoAction
-    }
-
+    
 
 )(Admin)

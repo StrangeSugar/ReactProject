@@ -12,7 +12,7 @@ let initState = {
     isLogin:user&&cookie ? true:false
 }
 
-export default function test(preState = initState, action) {
+export default function login_reducer(preState = initState, action) {
     
     let newState ={ }
 
@@ -22,11 +22,7 @@ export default function test(preState = initState, action) {
         case  SAVE_USER_INFO:
             newState = {user:data.data,cookie:data.cookie,isLogin:true}
 
-            console.log(data)
-            
-            console.log(newState)
-
-            console.log(localStorage)
+           
             return newState
             case DELETE_USER_INFO:
             newState = {user:{},cookie:"".cookie,isLogin:false}

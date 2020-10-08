@@ -5,7 +5,7 @@ import {message} from 'antd'
 import {connect} from  'react-redux'
 import {Redirect} from "react-router-dom"
 import "./css/login.less"
-import logo from './imgs/logo2.png'
+import logo from '../../static/imgs/logo2.png'
 import {createSaveUserInfoAction} from '../../redux/actions_creators/login_action'
 import {reqLogin} from '../../api'
 
@@ -23,7 +23,7 @@ import {reqLogin} from '../../api'
 class Login extends Component {
 
     componentDidMount(){
-        console.log(this.props)
+        
     }
 
 
@@ -64,8 +64,8 @@ class Login extends Component {
         if(result.status===0){
             result.cookie = document.cookie
             this.props.saveUserInfo(result)
-            this.props.history.replace("/admin")
-            console.log(result)
+            this.props.history.replace("/admin/home")
+            
            
          
         }else{
@@ -78,7 +78,7 @@ class Login extends Component {
     render() {
         if(this.props.isLogin){
             
-            return <Redirect to={'/admin'}/>
+            return <Redirect to={'/admin/home'}/>
         }
         
             return (
