@@ -7,8 +7,8 @@ import { message } from "antd"
 //登录请求
 export const reqLogin=(values)=>axios.post(`${BASE_URL}/login`,values)
 
-//商品列表请求
-export const reqCategoryList = () =>axios.get(`${BASE_URL}/manage/category/list`,{parentId:"5f6f0568a783260ee4bc4a83"})
+//商品分类列表请求
+export const reqCategoryList = (parentId) =>axios.get(`${BASE_URL}/manage/category/list`,parentId)
 
 //获取天气信息
 export const reqWeather = () =>{
@@ -22,10 +22,10 @@ export const reqWeather = () =>{
                 let weatherInfo = data.results[0].weather_data[0]
                 resolve(weatherInfo)
             }
-        })
-        
-    })
-    
-    
-   
+        })       
+    })  
 }
+//新增商品分类
+export const reqAddCategory = ({categoryName}) =>axios.post(`${BASE_URL}/manage/category/add`,{categoryName})
+//更新商品分类名
+export const reqUpdateCategory = ({categoryId,categoryName}) =>axios.post(`${BASE_URL}/manage/category/update`,{categoryId,categoryName})

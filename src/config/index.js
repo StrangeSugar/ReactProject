@@ -10,3 +10,6 @@ export const BASE_URL = ''
 export const BAIDU_WEATHER_KEY = "ak=3p49MVra6urFRGOT9s8UBWr2"
 //当前城市名
 export const BAIDU_WEATHER_CITY = 'chengdu'
+
+//每页显示多少
+export const PAGE_SIZE = 5
