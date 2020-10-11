@@ -62,13 +62,7 @@ export default class Category extends Component {
         console.log(result)
         const { status ,msg} = result
         if (status === 0) {
-            let categoryList = [...this.state.categoryList]
-            categoryList.forEach((item)=>{
-               if(item._id===categoryId){
-                   item.name = categoryName
-               }
-            })
-            this.setState({categoryList})
+            this.getCategory()
 
             this.setState({
                 visible: false,

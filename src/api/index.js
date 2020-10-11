@@ -29,3 +29,9 @@ export const reqWeather = () =>{
 export const reqAddCategory = ({categoryName}) =>axios.post(`${BASE_URL}/manage/category/add`,{categoryName})
 //更新商品分类名
 export const reqUpdateCategory = ({categoryId,categoryName}) =>axios.post(`${BASE_URL}/manage/category/update`,{categoryId,categoryName})
+//获取商品分页列表
+export const reqProductList = (pageNum,pageSize) =>axios.get(`${BASE_URL}/manage/product/list`,{params:{pageNum,pageSize}})
+//获取商品分页列表
+export const reqProductSearch = (pageNum, pageSize, productName, productDesc) =>axios.get(`${BASE_URL}/manage/product/search`,{params:{pageNum, pageSize, productName, productDesc}})
+//更新商品状态
+export const reqUpdateProduct = (productId,status) =>axios.post(`${BASE_URL}/manage/product/updateStatus`,{productId, status})

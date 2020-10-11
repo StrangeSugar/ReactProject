@@ -64,7 +64,7 @@ class Login extends Component {
         if(result.status===0){
             result.cookie = document.cookie
             this.props.saveUserInfo(result)
-            this.props.history.replace("/admin/home")
+            this.props.history.replace("/admin")
             
            
          

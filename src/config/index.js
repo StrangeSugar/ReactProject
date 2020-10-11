@@ -13,3 +13,8 @@ export const BAIDU_WEATHER_CITY = 'chengdu'
 
 //每页显示多少
 export const PAGE_SIZE = 5
+//初始页码
+export const INIT_PAGE = 1
+
+
+

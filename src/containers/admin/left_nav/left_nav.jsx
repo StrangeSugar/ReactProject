@@ -41,7 +41,7 @@ class LeftNav extends Component {
             <Menu
 
 
-                defaultSelectedKeys={[this.props.location.pathname.split('/').reverse()[0]]}
+                selectedKeys={[this.props.location.pathname.split('/').reverse()[0]]}
                 defaultOpenKeys={this.props.location.pathname.split('/').splice(2,this.props.location.pathname.split('/').length-3)}
                 mode={this.state.mode}
                 theme={this.state.theme}
