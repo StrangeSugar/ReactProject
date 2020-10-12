@@ -93,12 +93,12 @@ class Header extends Component {
     }
     getTitle = () =>{
         
-        let title = this.props.location.pathname.split('/').reverse()[0]
+        let title = this.props.location.pathname.indexOf('product')!==-1 ? "product":this.props.location.pathname.split('/').reverse()[0]
       
         menuList.forEach((item)=>{
             if(item.children &&item.children instanceof Array ){
                 item.children.forEach((childrenItem)=>{
-                    if(childrenItem.key===title){
+                    if(childrenItem.key===title){   
                         title = childrenItem.title
                         
                     }

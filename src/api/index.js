@@ -35,3 +35,5 @@ export const reqProductList = (pageNum,pageSize) =>axios.get(`${BASE_URL}/manage
 export const reqProductSearch = (pageNum, pageSize, productName, productDesc) =>axios.get(`${BASE_URL}/manage/product/search`,{params:{pageNum, pageSize, productName, productDesc}})
 //更新商品状态
 export const reqUpdateProduct = (productId,status) =>axios.post(`${BASE_URL}/manage/product/updateStatus`,{productId, status})
+//根据商品id获取分类名
+export const reqProductIdCategoryName = (productId) =>axios.get(`${BASE_URL}/manage/category/info`,{params:{categoryId:productId}})
