@@ -25,6 +25,7 @@ class Detail extends Component {
         this.resultRender(result)
     }
     resultRender = (result) => {
+        console.log(result)
         this.setState({ isLoading: false })
 
 
