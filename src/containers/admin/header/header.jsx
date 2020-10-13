@@ -56,7 +56,7 @@ class Header extends Component {
     componentDidMount() {
         
         
-       
+       //是否全屏
         if (screenfull.isEnabled) {
             screenfull.on('change', () => {
                 let newState = !this.state.isFull
