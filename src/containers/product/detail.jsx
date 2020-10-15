@@ -72,6 +72,7 @@ class Detail extends Component {
                     extra={
                         <Button type='primary' onClick={() => {
                             this.props.history.push("/admin/prod_about/product")
+                            localStorage.removeItem('product')
                         }} ><ArrowLeftOutlined />返回</Button>
                     }
                     

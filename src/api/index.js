@@ -37,3 +37,7 @@ export const reqProductSearch = (pageNum, pageSize, productName, productDesc) =>
 export const reqUpdateProduct = (productId,status) =>axios.post(`${BASE_URL}/manage/product/updateStatus`,{productId, status})
 //根据商品id获取分类名
 export const reqProductIdCategoryName = (productId) =>axios.get(`${BASE_URL}/manage/category/info`,{params:{categoryId:productId}})
+//删除已上传图片
+export const reqUploadRemoveImage = (name)=>axios.post(`${BASE_URL}/manage/img/delete`,{name})
+//添加商品
+export const reqAddProduct = (product)=>axios.post(`${BASE_URL}/manage/product/add`,{...product})
