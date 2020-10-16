@@ -1,48 +1,117 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Card, Form, Button, Input, Select, Upload, Modal, message } from 'antd'
 import { ArrowLeftOutlined, PlusOutlined } from '@ant-design/icons'
 import { reqCategoryList } from '../../api'
 import { BASE_URL } from '../../config'
-import { reqUploadRemoveImage, reqAddProduct } from '../../api'
+import { reqUploadRemoveImage, reqAddProduct ,reqUpdateProductItem} from '../../api'
 import Editor from './rich_text_editor'
+
 const { Option } = Select
-export default class AddUpadate extends Component {
+
+@connect((state) => ({
+    productItem: state.saveProductItem
+}))
+class AddUpadate extends Component {
+
     state = {
+        RemoveImgs: [],
         previewVisible: false,
         previewImage: '',
         previewTitle: '',
         fileList: [],
         categoryList: [],
-        imgs: []
+        imgs: [],
+        name: '',
+        productItem: {},
+        operaType: 'add'
+
+
 
     }
+    componentWillMount() {
+        const { id } = this.props.match.params
+        if (id) {
+            this.setState({ operaType: 'update', productItem: this.props.productItem })
+
+        }
+        this.setState({ name: '1' })
+        console.log(this.state.name)
+    }
     componentDidMount() {
+        console.log(this.state.name)
+        let fileList = []
+        if(this.state.operaType==='update'){
+            this.state.productItem.imgs.forEach(item => {
+                fileList.push({ uid: item, name: item, url: `${BASE_URL}/upload/` + item })
+            })
+        }
+        
+        this.setState({ fileList, imgs: this.state.productItem.imgs })
+
+
         this.getCategoryList()
+        this.refs.editorValue.setValue(this.state.productItem.detail)
+
 
     }
 
     onFinish = async (product) => {
+        console.log(product)
         product.price = parseInt(product.price)
+        // console.log(this.refs)
         product.detail = this.refs.editorValue.getValue()
         product.pCategoryId = "0"
         product.imgs = this.state.imgs
-        console.log(product)
-        let result = await reqAddProduct(product)
-        const{status,data,msg} = result
-        if(status===0){
-            message.success('商品添加成功')
-            this.props.history.replace('/admin/prod_about/product')
+        product._id = this.state.productItem._id
+
+
+        let removeImgs = this.state.RemoveImgs
+        removeImgs.forEach(async (item) => {
+            let result = await reqUploadRemoveImage(item)
+            const { status } = result
+            if (status === 0) {
+                console.log('删除了')
+            } else {
+                message.error("删除失败")
+            }
+
+        })
+
+        if (this.state.operaType === 'add') {
+            let result = await reqAddProduct(product)
+            const { status,  msg } = result
+            if (status === 0) {
+                message.success('商品添加成功')
+                this.props.history.replace('/admin/prod_about/product')
+            } else {
+                message.error(msg)
+            }
         }else{
-            message.error(msg)
+            console.log(product)
+            let result = await reqUpdateProductItem(product)
+            const { status,  msg } = result
+            if (status === 0) {
+               
+                message.success('商品更新成功')
+                this.props.history.replace('/admin/prod_about/product')
+            } else {
+                message.error(msg)
+            }
         }
-       
+
+
+
+
+
 
     }
     getCategoryList = async () => {
+
         let result = await reqCategoryList()
         const { status, data } = result
         if (status === 0) {
-            console.log(result)
+
             this.setState({ categoryList: data })
 
         } else {
@@ -71,21 +140,21 @@ export default class AddUpadate extends Component {
             previewTitle: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
         });
     };
-    onRemove = async (file) => {
-        console.log(file)
-        let result = await reqUploadRemoveImage(file.name)
-        const { status, msg } = result
-        if (status === 0) {
-            message.success('图片删除成功', 2)
-            let newDelImgs = [...this.state.imgs]
-            newDelImgs.splice(newDelImgs.findIndex((item) => {
-                return item === file.name
-            }), 1)
-            this.setState({ imgs: newDelImgs })
-        } else {
-            message.error(msg, 2)
-            return false
-        }
+    onRemove = (file) => {
+        //把要删除的图片先不提交，先记录
+        let newRemoveImgs = [...this.state.RemoveImgs]
+        newRemoveImgs.push(file.name)
+        this.setState({ RemoveImgs: newRemoveImgs })
+
+        //更新需要上传的图片名
+        let newDelImgs = [...this.state.imgs]
+        newDelImgs.splice(newDelImgs.findIndex((item) => {
+            return item === file.name
+        }), 1)
+        this.setState({ imgs: newDelImgs })
+
+
+
     }
 
     handleChange = ({ file, fileList }) => {
@@ -113,7 +182,8 @@ export default class AddUpadate extends Component {
     }
     render() {
 
-        const { previewVisible, previewImage, fileList, previewTitle } = this.state;
+        const { previewVisible, previewImage, fileList, previewTitle, operaType } = this.state;
+
         const uploadButton = (
             <div>
                 <PlusOutlined />
@@ -126,7 +196,7 @@ export default class AddUpadate extends Component {
                     title={
                         <div>
 
-                            {this.props.match.params.id ? '商品修改' : '商品添加'}
+                            {operaType === 'update' ? '商品修改' : '商品添加'}
                         </div>
                     }
                     extra={
@@ -135,14 +205,17 @@ export default class AddUpadate extends Component {
                         }} ><ArrowLeftOutlined />返回</Button>
                     }
                 >
-                    {this.props.match.params.id}
+
                     <Form
                         onFinish={this.onFinish}
+                        initialValues={this.state.productItem}
+                    // initialValues={this.props.match.params.id ?this.props.productItem:{categoryId:""}}
                     >
                         <Form.Item
                             label="商品名称："
                             name="name"
                             rules={[{ required: true, message: '内容不能为空' }]}
+
                         >
                             <Input style={{ width: "300px" }} placeholder="商品名称"></Input>
                         </Form.Item>
@@ -164,9 +237,9 @@ export default class AddUpadate extends Component {
                             label="商品分类："
                             name="categoryId"
                             rules={[{ required: true, message: '请选择分类' }]}
-                            initialValue=''
+
                         >
-                            <Select style={{ width: "300px" }}>
+                            <Select style={{ width: "300px" }} >
                                 <Option value=''>请选择分类</Option>
                                 {this.state.categoryList.map((item) => {
                                     return <Option key={item._id} value={item._id} >{item.name}</Option>
@@ -176,6 +249,7 @@ export default class AddUpadate extends Component {
                         </Form.Item>
                         <Form.Item
                             label="商品图片："
+
 
                         >
                             <Upload
@@ -201,12 +275,13 @@ export default class AddUpadate extends Component {
                         </Form.Item>
                         <Form.Item
                             label="商品描述："
+
                         >
                             <Editor ref='editorValue' />
 
                         </Form.Item>
 
-                        <Form.Item> <Button type='primary' htmlType='submit'>添加</Button></Form.Item>
+                        <Form.Item> <Button type='primary' htmlType='submit'>提交</Button></Form.Item>
                     </Form>
 
                 </Card>
@@ -214,3 +289,4 @@ export default class AddUpadate extends Component {
         )
     }
 }
+export default AddUpadate

@@ -10,17 +10,22 @@ import './css/detail.less'
     productItem: state.saveProductItem
 }))
 class Detail extends Component {
-    product = JSON.parse(localStorage.getItem('product'))
+    
+    
     state = {
         isLoading: true,
         categoryName: '',
+        product:{imgs:[]}
         
     }
     
     componentDidMount() {
         
-        
+         let product = this.props.productItem
+       this.setState({product},()=>{
         this.getProductIdCategoryName()
+       })
+       
     }
     getLocalStorage = ()=>{
        
@@ -29,11 +34,12 @@ class Detail extends Component {
     getProductIdCategoryName = async () => {
 
         
-        let result = await reqProductIdCategoryName(this.product.categoryId)
+        let result = await reqProductIdCategoryName(this.state.product.categoryId)
         this.resultRender(result)
+        
     }
     resultRender = (result) => {
-        console.log(result)
+        
         this.setState({ isLoading: false })
 
 
@@ -58,7 +64,7 @@ class Detail extends Component {
     }
     render() {
         
-        
+       
         
        
       
@@ -82,14 +88,14 @@ class Detail extends Component {
                         loading={this.state.isLoading} 
                         bordered
                     >
-                        <List.Item><span className='prod-name'>商品名称：{this.product.name}</span><span></span></List.Item>
-                        <List.Item><span className='prod-desc'>商品描述：{this.product.desc}</span><span></span></List.Item>
-                        <List.Item><span className='prod-price'>商品价格：{this.product.price+' 元'}</span><span></span></List.Item>
+                        <List.Item><span className='prod-name'>商品名称：{this.state.product.name}</span><span></span></List.Item>
+                        <List.Item><span className='prod-desc'>商品描述：{this.state.product.desc}</span><span></span></List.Item>
+                        <List.Item><span className='prod-price'>商品价格：{this.state.product.price+' 元'}</span><span></span></List.Item>
                         <List.Item><span className='prod-cate'>所属分类：{this.state.categoryName}</span><span></span></List.Item>
-                        <List.Item><span className='prod-img'>商品图片：{this.product.imgs.map((item)=>{
+                        <List.Item><span className='prod-img'>商品图片：{this.state.product.imgs.map((item)=>{
                            return <img key={item} src={`/upload/`+item} alt='商品图片' />
                         })}</span></List.Item>
-                        <List.Item>商品详情：<span dangerouslySetInnerHTML={{__html:this.product.detail}} ></span></List.Item>
+                        <List.Item>商品详情：<span dangerouslySetInnerHTML={{__html:this.state.product.detail}} ></span></List.Item>
                         {/* <List.Item><span className='prod-'></span><span>商品描述</span>{product.desc}</List.Item> */}
 
                     </List>

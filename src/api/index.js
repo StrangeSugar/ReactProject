@@ -34,10 +34,12 @@ export const reqProductList = (pageNum,pageSize) =>axios.get(`${BASE_URL}/manage
 //获取商品分页列表
 export const reqProductSearch = (pageNum, pageSize, productName, productDesc) =>axios.get(`${BASE_URL}/manage/product/search`,{params:{pageNum, pageSize, productName, productDesc}})
 //更新商品状态
-export const reqUpdateProduct = (productId,status) =>axios.post(`${BASE_URL}/manage/product/updateStatus`,{productId, status})
+export const reqUpdateProductStatus = (productId,status) =>axios.post(`${BASE_URL}/manage/product/updateStatus`,{productId, status})
 //根据商品id获取分类名
 export const reqProductIdCategoryName = (productId) =>axios.get(`${BASE_URL}/manage/category/info`,{params:{categoryId:productId}})
 //删除已上传图片
 export const reqUploadRemoveImage = (name)=>axios.post(`${BASE_URL}/manage/img/delete`,{name})
 //添加商品
 export const reqAddProduct = (product)=>axios.post(`${BASE_URL}/manage/product/add`,{...product})
+//更新商品
+export const reqUpdateProductItem = (product)=>axios.post(`${BASE_URL}/manage/product/update`,{...product})

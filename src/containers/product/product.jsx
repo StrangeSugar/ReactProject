@@ -4,9 +4,9 @@ import {connect} from 'react-redux'
 import { PlusCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import './css/product.less'
 import { PAGE_SIZE } from '../../config'
-import { reqProductList, reqProductSearch ,reqUpdateProduct } from '../../api'
+import { reqProductList, reqProductSearch ,reqUpdateProductStatus } from '../../api'
 import { INIT_PAGE } from '../../config'
-import {createSaveProductItemAction} from '../../redux/actions_creators/detail_action' 
+import {createSaveProductItemAction} from '../../redux/actions_creators/product_action' 
 
 const { Option } = Select
 const SELECT_NAME = "selectName"
@@ -89,7 +89,7 @@ class Product extends Component {
         
         if(status===1){
             status=2
-            let result = await reqUpdateProduct(_id,status)
+            let result = await reqUpdateProductStatus(_id,status)
             
             this.resultRender(result)
             
@@ -97,7 +97,7 @@ class Product extends Component {
         }
         if(status===2){
             status=1
-            let result = await reqUpdateProduct(_id,status)
+            let result = await reqUpdateProductStatus(_id,status)
             
             this.resultRender(result)
             return 
@@ -132,10 +132,7 @@ class Product extends Component {
     }
     //详情查看操作
    
-    //修改操作
-    update =() =>{
-       
-    }
+    
     selectType= (value)=>{
        this.setState({selectType:value})
     }
@@ -208,7 +205,8 @@ class Product extends Component {
                                this.props.history.push(`/admin/prod_about/product/detail/${product._id}`)
                             }}>详情</Button> <br />
                            <Button type='link' onClick={()=>{
-                               this.update(product)
+                               console.log(product)
+                               this.props.saveProductItem(product)
                                this.props.history.push(`/admin/prod_about/product/add_update/${product._id}`)
                             }} >修改</Button>
                         </div>

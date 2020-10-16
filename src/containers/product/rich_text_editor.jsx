@@ -6,6 +6,7 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import './css/rich_text_editor.less'
 export default class RichTextEditor extends Component {
+
     state = {
         editorState: EditorState.createEmpty(),//构建以恶搞初始化状态的编辑器+内容
     };
@@ -20,6 +21,16 @@ export default class RichTextEditor extends Component {
         return draftToHtml(convertToRaw(editorState.getCurrentContent()))
          
     }
+    setValue = (data)=>{
+        const contentBlock = htmlToDraft(data)
+         if(contentBlock){
+            const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks)
+            const editorState = EditorState.createWithContent(contentState)
+            this.setState({editorState})
+
+         }
+    }
+
 
 
 
