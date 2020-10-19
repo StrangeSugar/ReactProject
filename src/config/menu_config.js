@@ -63,6 +63,12 @@ export default [
                 path: '/admin/charts/pie'
             },
         ]
-    }
+    },
+    {
+        title: '订单管理', // 菜单标题名称
+        key: 'order', // 对应的path
+        icon: 'HomeFilled', // 图标名称
+        path: '/admin/order'//对应路径
+    },
 
 ]

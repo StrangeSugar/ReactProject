@@ -29,7 +29,7 @@ export default class RichTextEditor extends Component {
             this.setState({editorState})
 
          }
-    }
+     }
 
 
 

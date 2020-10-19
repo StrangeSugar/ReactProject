@@ -31,7 +31,7 @@ export const reqAddCategory = ({categoryName}) =>axios.post(`${BASE_URL}/manage/
 export const reqUpdateCategory = ({categoryId,categoryName}) =>axios.post(`${BASE_URL}/manage/category/update`,{categoryId,categoryName})
 //获取商品分页列表
 export const reqProductList = (pageNum,pageSize) =>axios.get(`${BASE_URL}/manage/product/list`,{params:{pageNum,pageSize}})
-//获取商品分页列表
+//商品搜索
 export const reqProductSearch = (pageNum, pageSize, productName, productDesc) =>axios.get(`${BASE_URL}/manage/product/search`,{params:{pageNum, pageSize, productName, productDesc}})
 //更新商品状态
 export const reqUpdateProductStatus = (productId,status) =>axios.post(`${BASE_URL}/manage/product/updateStatus`,{productId, status})
@@ -43,3 +43,11 @@ export const reqUploadRemoveImage = (name)=>axios.post(`${BASE_URL}/manage/img/d
 export const reqAddProduct = (product)=>axios.post(`${BASE_URL}/manage/product/add`,{...product})
 //更新商品
 export const reqUpdateProductItem = (product)=>axios.post(`${BASE_URL}/manage/product/update`,{...product})
+//获取角色列表
+export const reqRoleList = () =>axios.get(`${BASE_URL}/manage/role/list`)
+//添加角色
+export const reqAddRole = (roleName)=>axios.post(`${BASE_URL}/manage/role/add`,{roleName})
+//更新角色
+export const reqUpdateRole = (role)=>axios.post(`${BASE_URL}/manage/role/add`,{role})
+//获取用户列表
+export const reqUserList = () =>axios.get(`${BASE_URL}/manage/user/list`)

@@ -45,13 +45,14 @@ class AddUpadate extends Component {
             this.state.productItem.imgs.forEach(item => {
                 fileList.push({ uid: item, name: item, url: `${BASE_URL}/upload/` + item })
             })
+            this.refs.editorValue.setValue(this.state.productItem.detail)
         }
         
         this.setState({ fileList, imgs: this.state.productItem.imgs })
 
 
         this.getCategoryList()
-        this.refs.editorValue.setValue(this.state.productItem.detail)
+        
 
 
     }

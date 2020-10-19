@@ -16,6 +16,7 @@ import Pie from '../pie/pie'
 import LeftNav from './left_nav/left_nav'
 import AddUpdate from '../product/addUpdate'
 import Detail from '../product/detail'
+import Order from '../order/order'
 const { Footer, Sider, Content } = Layout;
 
 
@@ -58,6 +59,7 @@ class Admin extends Component {
                                     <Route path = '/admin/charts/bar' component={Bar}/>
                                     <Route path = '/admin/charts/line' component={Line}/>
                                     <Route path = '/admin/charts/pie' component={Pie}/>
+                                    <Route path = '/admin/order' component={Order}/>
                                     <Redirect to='/admin/home'/>
                                 </Switch>
                             </Content>
