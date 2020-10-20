@@ -51,3 +51,11 @@ export const reqAddRole = (roleName)=>axios.post(`${BASE_URL}/manage/role/add`,{
 export const reqUpdateRole = (role)=>axios.post(`${BASE_URL}/manage/role/add`,{role})
 //获取用户列表
 export const reqUserList = () =>axios.get(`${BASE_URL}/manage/user/list`)
+//添加用户
+export const reqAddUser = (user)=>axios.post(`${BASE_URL}/manage/user/add`,{...user} )
+//更新角色
+export const reqUpdateUser = (user)=>axios.post(`${BASE_URL}/manage/user/update`,{...user})
+//更新角色
+export const reqDeleteUser = (userId)=>axios.post(`${BASE_URL}/manage/user/delete`,{userId})
+ 
+
