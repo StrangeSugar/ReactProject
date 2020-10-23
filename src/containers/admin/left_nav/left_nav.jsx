@@ -8,7 +8,9 @@ import logo from '../../../static/imgs/logo2.png'
 import menuList from '../../../config/menu_config'
 import {createSaveTitleAction} from '../../../redux/actions_creators/left_nav_actions'
 const { SubMenu } = Menu;
-@connect((state)=>({}),
+@connect((state)=>({
+    user:state.userInfo.user
+}),
 {
     saveTitle:createSaveTitleAction
 }
@@ -21,20 +23,63 @@ class LeftNav extends Component {
     state = {
         mode: 'inline',
         theme: 'dark',
-        key: {}
+        key: {},
+        userRoleMenuList:[]
     };
-    componentDidMount() {
-        
-        
+
+   componentWillMount(){
     
+       let userRoleMenuList = this.props.user.role.menus.map((item)=>{
+        return  item.split('/').reverse()[0]
+           
+           
+       })
+      
+       
+       
+      
+       this.setState({userRoleMenuList})
+       
+
+   }
+   hasAuth = (menu)=>{
+    //    let userRoleMenuList = this.state.userRoleMenuList
+    //   if(userRoleMenuList.findIndex(((item)=>{
+    //       console.log(item,menu.key)
+    //     return item===menu.key
+    //   }))===-1){
+    //     return false
+    //   }else{
+    //       return true
+    //   }
+   
+    if(this.props.user.username==='admin'){
+        return true
+    }else{
+        let userRoleMenuList = this.state.userRoleMenuList
+        
+        if(menu.children){
+           
+            return menu.children.some((item)=>{
+                return userRoleMenuList.indexOf(item.key)!==-1
+            })
+        }else{
+            return userRoleMenuList.indexOf(menu.key)!==-1
+        }
+        
+
+        
     }
+    
+     
+   }
+
     
  
 
 
     createMenu = (menuList) => {
-
-
+        
         return (
             
 
@@ -43,14 +88,22 @@ class LeftNav extends Component {
 
                 selectedKeys={[this.props.location.pathname.indexOf('product')!== -1 ? 'product':this.props.location.pathname.split('/').reverse()[0]]}
                 defaultOpenKeys={this.props.location.pathname.split('/').splice(2,this.props.location.pathname.split('/').length-3)}
+                // openKeys={[this.props.location.pathname.split('/')[2]]}
                 mode={this.state.mode}
                 theme={this.state.theme}
                 // inlineCollapsed={true}
             >
+
+                
                 {
+                    
                     menuList.map((item) => {
+                        
+                            // console.log(this.state.userRoleMenuList.findIndex(item.key)!==-1)
+                        if(this.hasAuth(item)){
 
                         if (!item.children) {
+
                             return (
                                 <Menu.Item key={item.key} onClick= {()=>{this.props.saveTitle(item.title)}} icon={React.createElement(
                                     Icon[item.icon]
@@ -72,6 +125,9 @@ class LeftNav extends Component {
                                 </SubMenu>
                             )
                         }
+                    }else{
+                        return ''
+                    }
                     })
                 }
             </Menu>
@@ -89,6 +145,7 @@ class LeftNav extends Component {
                 </header>
 
                 {
+
                     this.createMenu(menuList)
 
                 }

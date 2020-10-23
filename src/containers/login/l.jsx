@@ -6,21 +6,21 @@ import { connect } from 'react-redux'
 import { Redirect } from "react-router-dom"
 import "./css/login.less"
 import logo from '../../static/imgs/logo2.png'
-import { createSaveUserInfoAction ,createSaveMenuOpenKeyAction} from '../../redux/actions_creators/login_action'
+import { createSaveUserInfoAction } from '../../redux/actions_creators/login_action'
 import { createSaveTitleAction } from '../../redux/actions_creators/left_nav_actions'
 import { reqLogin } from '../../api'
 import menuList from '../../config/menu_config'
-
+import Title from 'antd/lib/skeleton/Title';
 
 
 @connect(state => ({
-    userInfo: state.userInfo
+    userInfo: state.userInfo,
+   
 
 }),
     {
         saveUserInfo: createSaveUserInfoAction,
-        saveTitle: createSaveTitleAction,
-        saveMenuOpenKey:createSaveMenuOpenKeyAction
+        saveTitle: createSaveTitleAction
 
     }
 )
@@ -28,7 +28,8 @@ import menuList from '../../config/menu_config'
 
 class Login extends Component {
     state={
-        Item:{}
+        Item:{},
+        result:{}
     }
 
     componentDidMount() {
@@ -55,23 +56,44 @@ class Login extends Component {
 
 
     };
-  
-    findItem = (menuList,result) => {
+    // return userRoleMenuList.some((uItem)=>{
+    //     return uItem===cItem.key
+    //  })
+    // let cItemIndex
+    // menuList.findIndex((item)=>{
+    //    if(item.children){
+    //     return item.children.findIndex((cItem)=>{
+    //          if(cItem.children){
+    //             this.findItem(cItem.children)
+    //          }else{
+    //             let userRoleMenuList = result.data.role.menus.map((item) => {
+    //                 return item.split('/').reverse()[0]
+    //             })
+    //             return userRoleMenuList.some((uItem)=>{
+    //                     return uItem===cItem.key
+    //                  })
+    //          }
+    //     })
+
+    //    }
+
+    // })
+    findItem2 = (menuList,menus) => {
         let Item = ''
-        
-         menuList.findIndex((menuItem) => {
+        let index = ''
+        index =  menuList.findIndex((menuItem) => {
             if (menuItem.children) {
-                Item = this.findItem(menuItem.children,result)
+                Item = this.findItem(menuItem.children,menus)
                 if(Item!==''){
                     return true
                 }
             } else {
-                let userRoleMenuList = result.data.role.menus.map((item) => {
-                    return item.split('/').reverse()[0] 
+                let userRoleMenuList = menus.map((item) => {
+                    return item.split('/').reverse()[0]
                 })
                return userRoleMenuList.some((userItem)=>{
                    if(userItem===menuItem.key){
-                       Item = {path:menuItem.path,title:menuItem.title,key:menuItem.key}
+                       Item = {path:menuItem.path,title:menuItem.title}
                        return true
                    }
                    else{
@@ -80,12 +102,50 @@ class Login extends Component {
                 })
                 
             }
-            return ''
            
         })
-       
+        console.log(Item)
+        console.log(index)
+       this.setState({Item},()=>{
+          this.render()
+       })
+        return Item
+        
         
        
+
+    }
+    findItem = (menuList,result) => {
+        let Item = ''
+        let index = ''
+        index =  menuList.findIndex((menuItem) => {
+            if (menuItem.children) {
+                Item = this.findItem(menuItem.children,result)
+                if(Item!==''){
+                    return true
+                }
+            } else {
+                let userRoleMenuList = result.data.role.menus.map((item) => {
+                    return item.split('/').reverse()[0]
+                })
+               return userRoleMenuList.some((userItem)=>{
+                   if(userItem===menuItem.key){
+                       Item = {path:menuItem.path,title:menuItem.title}
+                       return true
+                   }
+                   else{
+                       return false
+                   }
+                })
+                
+            }
+           
+        })
+        console.log(Item)
+        console.log(index)
+       this.setState({Item},()=>{
+          this.render()
+       })
         return Item
         
         
@@ -111,6 +171,10 @@ class Login extends Component {
 
 
         if (result.status === 0) {
+            this.setState({result},()=>{
+                console.log(this.state)
+               this.render()
+            })
             if (result.data.username !== 'admin') {
                 result.data.role.menus.forEach((item, index) => {
 
@@ -119,27 +183,25 @@ class Login extends Component {
                     }
 
                 })
-              
+                console.log(result.data)
             }
 
             result.cookie = document.cookie
-            this.props.saveUserInfo(result)
+            
             if (result.data.username === 'admin') {
-                this.props.history.replace('/admin')
-                
-            } else {
-                let { path, title } =  this.findItem(menuList,result)///admin/prod_about/category 分类管理 category
-                
-                
-                this.props.history.replace(path)
-                this.props.saveTitle(title)
+                this.props.history.replace('/admin/home')
                
+            } else {
+                let { path, title} =  this.findItem(menuList,result)
+               
+                console.log( path, title)
+                this.props.history.replace(path)
+
+                this.props.saveTitle(title)
 
             }
-            
-            
 
-
+            this.props.saveUserInfo(result)
 
 
         } else {
@@ -148,72 +210,15 @@ class Login extends Component {
 
 
     }
-        findItem2 = (menuList,menus) => {
-            console.log(menuList,menus)
-    //     let Item = ''
-      
-    //    menuList.findIndex((menuItem) => {
-    //         if (menuItem.children) {
-    //             Item = this.findItem(menuItem.children,menus)
-    //             if(Item!==''){
-    //                 return true
-    //             }
-    //         } else {
-    //             let userRoleMenuList = menus.map((item) => {
-    //                 return item.split('/').reverse()[0]
-    //             })
-    //            return userRoleMenuList.some((userItem)=>{
-    //                if(userItem===menuItem.key){
-    //                    Item = {path:menuItem.path,title:menuItem.title}
-    //                    return true
-    //                }
-    //                else{
-    //                    return false
-    //                }
-    //             })
-                
-    //         }
-           
-    //     })
-        
-     
-    //     return Item
-        
-        
-       
-
-    }
 
     render() {
-        if (this.props.userInfo.isLogin) {
-            let menus=this.props.userInfo.user.role.menus.map((item)=>{
-               return item.split('/').reverse()[0]
-            })
-            console.log(menus) //["/category", "/role", "/user"]
-            // let {path} = this.findItem2(menuList,["/category", "/role", "/user"])
-            let path =''
-         menuList.findIndex((item)=>{
-               if(item.children){
-                return item.children.findIndex((cItem)=>{
-                   return menus.some((mItem)=>{
-                    path=cItem.path
-                       return mItem===cItem.key
-                    })
-                })!==-1
-                
-               }else{
-                return menus.some((mItem)=>{
-                    path=item.path
-                       return mItem===item.key
-                    })
-               }
-              
-
-            })
-           
-          
+        if (this.props.isLogin) {
+          let {path} = this.findItem2(menuList,this.props.userInfo.user.role.menus)
 console.log(path)
-            return <Redirect to={path} />
+         
+            return <Redirect to={'/admin/home'} />
+          
+            
         }
 
         return (

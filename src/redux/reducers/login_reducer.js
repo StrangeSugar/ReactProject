@@ -1,4 +1,4 @@
-import {SAVE_USER_INFO,DELETE_USER_INFO} from '../action_types'
+import {SAVE_USER_INFO,DELETE_USER_INFO,SAVE_MENU_OPEN_KEY} from '../action_types'
 
 let user = JSON.parse(localStorage.getItem("user"))
 let cookie = localStorage.getItem("cookie")
@@ -27,6 +27,9 @@ export default function login_reducer(preState = initState, action) {
             case DELETE_USER_INFO:
             newState = {user:{},cookie:"".cookie,isLogin:false}
             return newState
+            case SAVE_MENU_OPEN_KEY:
+            
+            return data
 
         default:
             return preState

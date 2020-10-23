@@ -3,9 +3,8 @@ import { Card, Button, Select,  Input, Table, message } from 'antd';
 import {connect} from 'react-redux'
 import { PlusCircleOutlined, SearchOutlined } from '@ant-design/icons'
 import './css/product.less'
-import { PAGE_SIZE } from '../../config'
 import { reqProductList, reqProductSearch ,reqUpdateProductStatus } from '../../api'
-import { INIT_PAGE } from '../../config'
+import { INIT_PAGE ,PAGE_SIZE} from '../../config'
 import {createSaveProductItemAction} from '../../redux/actions_creators/product_action' 
 
 const { Option } = Select

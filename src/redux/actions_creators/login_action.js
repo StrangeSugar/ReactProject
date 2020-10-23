@@ -1,4 +1,4 @@
-import { SAVE_USER_INFO,DELETE_USER_INFO} from "../action_types"
+import { SAVE_USER_INFO,DELETE_USER_INFO,SAVE_MENU_OPEN_KEY} from "../action_types"
 
 
 
@@ -20,4 +20,9 @@ export const createDeleteuserInfoAction = () => {
     return {type:DELETE_USER_INFO}
 
 }
+export const createSaveMenuOpenKeyAction = (value) => {
+    
+    
+    return {type:SAVE_MENU_OPEN_KEY,data:value}
 
+}

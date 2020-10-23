@@ -53,6 +53,7 @@ class Header extends Component {
         
 
     }
+    
     componentDidMount() {
         
         
@@ -94,9 +95,10 @@ class Header extends Component {
     getTitle = () =>{
         
         let title = this.props.location.pathname.indexOf('product')!==-1 ? "product":this.props.location.pathname.split('/').reverse()[0]
-      
+       
         menuList.forEach((item)=>{
-            if(item.children &&item.children instanceof Array ){
+            if(item.children&&item.children instanceof Array ){
+                
                 item.children.forEach((childrenItem)=>{
                     if(childrenItem.key===title){   
                         title = childrenItem.title
@@ -104,9 +106,15 @@ class Header extends Component {
                     }
 
                 })
+            }else{
+                if(item.key===title){
+                    title = item.title
+                }
             }
 
         })
+       
+        
        
         this.setState({title})
 
@@ -122,7 +130,7 @@ class Header extends Component {
         
         let {weather,dayPictureUrl,temperature} = this.state.weatherInfo
         
-       
+      
         return (
             <header className='header'>
 
@@ -171,7 +179,7 @@ class Header extends Component {
                 </div>
                 <div className='header-bottom'>
                     <div className='header-bottom-left'>
-                    <span>{this.props.saveTitle || this.state.title}</span>
+                    <span>{this.props.saveTitle?this.props.saveTitle:this.state.title}</span>
 
                     </div>
                     <div className='header-bottom-right'>

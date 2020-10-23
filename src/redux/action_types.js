@@ -3,4 +3,5 @@
  export const SAVE_TITLE = 'save_title'
  export const SAVE_PRODUCT_ITEM = 'save_product_item'
  export const SAVE_USER_ITEM = 'save_user_item'
+ export const SAVE_MENU_OPEN_KEY = 'SaveMenuOpenKey'
  
